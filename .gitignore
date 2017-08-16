@@ -1,0 +1,8 @@
+# Vim
+*.swp
+*.swo
+
+# Terraform
+*.tfstate*
+.terraform
+*_override.tf
