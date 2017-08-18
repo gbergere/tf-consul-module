@@ -1,0 +1,39 @@
+#cloud-config
+
+write_files:
+  - path: "/etc/consul.d/consul.json"
+    permissions: "0644"
+    owner: "root"
+    content: |
+      {"service": {"name": "consul", "port": 8500}}
+
+coreos:  
+  update:
+    reboot-strategy: "off"
+  units:
+    - name: consul.service
+      command: start
+      content: |
+        [Unit]
+        Description=consul
+        After=docker.service
+        
+        [Service]
+        Restart=on-failure
+        RestartSec=5s
+        TimeoutStartSec=0
+        
+        ExecStartPre=-/usr/bin/docker stop -t 15 consul
+        ExecStartPre=-/usr/bin/docker rm -f consul
+        ExecStartPre=-/bin/sh -c "test -d /var/lib/consul || mkdir /var/lib/consul && chmod 777 /var/lib/consul"
+        ExecStart=/usr/bin/docker run \
+            -v /etc/consul.d:/etc/consul.d \
+            -v /var/lib/consul:/var/lib/consul \
+            -e CONSUL_CLIENT_INTERFACE=eth0 \
+            -e CONSUL_BIND_INTERFACE=eth0 \
+            --network=host \
+            --name consul consul:0.9.2 \
+                agent -server -bootstrap-expect=1 \
+                -config-dir=/etc/consul.d \
+                -data-dir=/var/lib/consul
+        ExecStop=/usr/bin/docker stop -t 15 consul
