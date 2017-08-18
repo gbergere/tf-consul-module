@@ -1,0 +1,37 @@
+#cloud-config
+
+write_files:
+  - path: "/etc/consul.d/web.json"
+    permissions: "0644"
+    owner: "root"
+    content: |
+      {"service": {"name": "web", "tags": ["rails"], "port": 80}}
+
+coreos:  
+  update:
+    reboot-strategy: "off"
+  units:
+    - name: consul.service
+      command: start
+      content: |
+        [Unit]
+        Description=consul
+        After=docker.service
+        
+        [Service]
+        Restart=on-failure
+        RestartSec=5s
+        TimeoutStartSec=0
+        
+        ExecStartPre=-/usr/bin/docker stop -t 15 consul
+        ExecStartPre=-/usr/bin/docker rm -f consul
+        ExecStart=/usr/bin/docker run \
+            -v /etc/consul.d:/etc/consul.d:ro \
+            -e CONSUL_CLIENT_INTERFACE=eth0 \
+            -e CONSUL_BIND_INTERFACE=eth0 \
+            --network=host \
+            --name consul \
+            consul:0.9.2 \
+                agent -config-dir=/etc/consul.d \
+                -join ${consul_servers}
+        ExecStop=/usr/bin/docker stop -t 15 consul
