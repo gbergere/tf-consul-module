@@ -15,12 +15,18 @@ verifier:
   name: terraform
   format: doc
   groups:
-    - name: default
+    - name: server
       controls:
-        - operating_system
-      hostnames: public_ip
+        - consul_run
+        - consul_server
+      hostnames: server_ip
       username: core
-  sleep: 120
+    - name: agent
+      controls:
+        - consul_run
+        - consul_agent
+      hostnames: agent_ip
+      username: core
 
 suites:
   - name: default

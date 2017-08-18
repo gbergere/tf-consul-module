@@ -1,6 +1,6 @@
 resource "aws_security_group" "test" {
   vpc_id      = "${aws_vpc.test.id}"
-  name        = "tf-consul-module-test"
+  name_prefix = "tf-consul-module-test-"
   description = "Security group used to test tf-consul-module"
 
   ingress {

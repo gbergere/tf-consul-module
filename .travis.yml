@@ -18,6 +18,8 @@ install:
 
 before_script:
   - ssh-keygen -N '' -f ~/.ssh/id_rsa
+  - kitchen create
+  - sleep 60
 
 script:
   - kitchen verify

@@ -13,7 +13,3 @@ module "consul" {
   key_name                   = "${aws_key_pair.test.key_name}"
   additional_security_groups = ["${aws_security_group.test.id}"]
 }
-
-output "public_ip" {
-  value = "${module.consul.public_ip}"
-}
