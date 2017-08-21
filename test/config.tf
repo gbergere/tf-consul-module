@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "eu-central-1"
-}
-
 variable "name_prefix" {
   default = "tf-consul-module-test-"
 }
