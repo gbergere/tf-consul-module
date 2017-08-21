@@ -36,6 +36,8 @@ module "consul" {
   key_name = "${var.key_name}"
 }
 
+variable "aws_region" {}
+
 variable "vpc_id" {}
 
 variable "subnet_id" {}

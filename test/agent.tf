@@ -24,17 +24,31 @@ data "template_file" "bootstrap_etcd" {
 resource "aws_instance" "agent" {
   instance_type = "t2.small"
   ami           = "${data.aws_ami.core.id}"
-  subnet_id     = "${aws_subnet.test.id}"
-  key_name      = "${aws_key_pair.test.key_name}"
+  subnet_id     = "${module.vpc.subnet_id}"
+  key_name      = "${module.vpc.key_name}"
 
   user_data = "${data.template_file.bootstrap_etcd.rendered}"
 
   vpc_security_group_ids = [
     "${module.consul.agent_security_group}",
-    "${aws_security_group.test.id}",
+    "${module.vpc.security_group}",
+    "${aws_security_group.client.id}",
   ]
 
   tags {
-    Name = "tf-consul-module-test-agent"
+    Name = "${var.name_prefix}-agent"
+  }
+}
+
+resource "aws_security_group" "client" {
+  vpc_id      = "${module.vpc.vpc_id}"
+  name_prefix = "${var.name_prefix}-client-"
+  description = "Security group used to test tf-consul-module (client)"
+
+  egress {
+    from_port   = 8500
+    to_port     = 8500
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
