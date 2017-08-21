@@ -23,10 +23,6 @@ This module use `test-kitchen` and `inspec` in order to be tested with
 
 ### Sample
 ```hcl
-provider "aws" {
-  region = "${var.aws_region}"
-}
-
 module "consul" {
   source = "github.com/gbergere/tf-consul-module"
 
@@ -35,8 +31,6 @@ module "consul" {
 
   key_name = "${var.key_name}"
 }
-
-variable "aws_region" {}
 
 variable "vpc_id" {}
 
