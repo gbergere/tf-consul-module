@@ -2,14 +2,24 @@ provider "aws" {
   region = "eu-central-1"
 }
 
+variable "name_prefix" {
+  default = "tf-consul-module-test-"
+}
+
+module "vpc" {
+  source = "github.com/gbergere/tf-vpc-test-module"
+
+  name_prefix = "${var.name_prefix}"
+}
+
 module "consul" {
   source = "../"
 
-  name_prefix = "tf-consul-module-test-"
+  name_prefix = "${var.name_prefix}"
 
-  vpc_id    = "${aws_vpc.test.id}"
-  subnet_id = "${aws_subnet.test.id}"
+  vpc_id    = "${module.vpc.vpc_id}"
+  subnet_id = "${module.vpc.subnet_id}"
 
-  key_name                   = "${aws_key_pair.test.key_name}"
-  additional_security_groups = ["${aws_security_group.test.id}"]
+  key_name                   = "${module.vpc.key_name}"
+  additional_security_groups = ["${module.vpc.security_group}"]
 }
