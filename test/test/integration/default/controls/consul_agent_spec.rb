@@ -1,8 +1,7 @@
-cluster_ip = attribute "cluster_ip", {}
+cluster_ip = attribute "consul_server", {}
 
 control 'consul_agent' do
   describe command('docker logs consul') do
-    its('stdout') { should match (/Server: false/) }
     its('stdout') { should match (/agent: Synced service/) }
   end
 

@@ -7,6 +7,10 @@ variable "subnet_id" {}
 
 variable "key_name" {}
 
+variable "cluster_size" {
+  default = 3
+}
+
 variable "instance_type" {
   default = "t2.micro"
 }
