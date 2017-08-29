@@ -13,21 +13,21 @@ data "aws_ami" "core" {
   }
 }
 
-data "template_file" "bootstrap_etcd" {
+data "template_file" "bootstrap" {
   template = "${file("${path.module}/bootstrap_agent.yml")}"
 
   vars {
-    consul_servers = "${module.consul.private_ip}"
+    consul_server = "${module.consul.consul_server}"
   }
 }
 
 resource "aws_instance" "agent" {
-  instance_type = "t2.small"
+  instance_type = "t2.micro"
   ami           = "${data.aws_ami.core.id}"
   subnet_id     = "${module.vpc.subnet_id}"
   key_name      = "${module.vpc.key_name}"
 
-  user_data = "${data.template_file.bootstrap_etcd.rendered}"
+  user_data = "${data.template_file.bootstrap.rendered}"
 
   vpc_security_group_ids = [
     "${module.consul.agent_security_group}",
@@ -36,7 +36,7 @@ resource "aws_instance" "agent" {
   ]
 
   tags {
-    Name = "${var.name_prefix}-agent"
+    Name = "${var.name_prefix}agent"
   }
 }
 

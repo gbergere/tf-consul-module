@@ -33,5 +33,5 @@ coreos:
             --name consul \
             consul:0.9.2 \
                 agent -config-dir=/etc/consul.d \
-                -join ${consul_servers}
+                -join ${consul_server}
         ExecStop=/usr/bin/docker stop -t 15 consul

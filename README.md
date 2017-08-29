@@ -18,6 +18,7 @@ This module use `test-kitchen` and `inspec` in order to be tested with
 * `subnet_id`: String (required)
 * `key_name`: String (required)
 * `name_prefix`: String (optional, default: `tf-`)
+* `cluster_size`: Integer (optional, default: `3`)
 * `instance_type`: String (optional, default: `t2.micro`)
 * `additional_security_groups`: List (optional)
 
