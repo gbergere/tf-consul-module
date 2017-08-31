@@ -17,7 +17,7 @@ data "template_file" "bootstrap" {
   template = "${file("${path.module}/bootstrap_agent.yml")}"
 
   vars {
-    consul_server = "${module.consul.consul_server}"
+    consul_server = "${element(module.consul.private_ips, 0)}"
   }
 }
 

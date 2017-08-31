@@ -7,5 +7,5 @@ output "agent_ip" {
 }
 
 output "consul_server" {
-  value = "${module.consul.consul_server}"
+  value = "${element(module.consul.private_ips, 0)}"
 }
