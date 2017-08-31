@@ -1,7 +1,3 @@
-output "consul_server" {
-  value = "${aws_instance.consul.0.private_ip}"
-}
-
 output "server_security_group" {
   value = "${aws_security_group.server.id}"
 }
