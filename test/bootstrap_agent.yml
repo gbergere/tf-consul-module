@@ -6,11 +6,22 @@ write_files:
     owner: "root"
     content: |
       {"service": {"name": "web", "tags": ["rails"], "port": 80}}
+  - path: "/etc/dnsmasq.d/10-consul"
+    permissions: "0644"
+    owner: "root"
+    content: |
+      # Enable forward lookup of the 'consul' domain:
+      server=/consul/127.0.0.1#8600
 
 coreos:  
   update:
     reboot-strategy: "off"
   units:
+    - name: nameservers.network
+      content: |
+        [Network]
+        DHCP=yes
+        DNS=127.0.0.1
     - name: consul.service
       command: start
       content: |
@@ -35,3 +46,25 @@ coreos:
                 agent -config-dir=/etc/consul.d \
                 -join ${consul_server}
         ExecStop=/usr/bin/docker stop -t 15 consul
+    - name: dnsmasq.service
+      command: start
+      content: |
+        [Unit]
+        Description=dnsmasq
+        After=docker.service
+        
+        [Service]
+        Restart=on-failure
+        RestartSec=5s
+        TimeoutStartSec=0
+        
+        ExecStartPre=-/usr/bin/docker stop -t 15 dnsmasq
+        ExecStartPre=-/usr/bin/docker rm -f dnsmasq
+        ExecStart=/usr/bin/docker run \
+            -v /etc/dnsmasq.d:/etc/dnsmasq.d \
+            --cap-add=NET_ADMIN \
+            --network=host \
+            --name dnsmasq quay.io/coreos/dnsmasq \
+                --conf-dir=/etc/dnsmasq.d \
+                --keep-in-foreground
+        ExecStop=/usr/bin/docker stop -t 15 dnsmasq
