@@ -3,7 +3,10 @@ variable "name_prefix" {
 }
 
 variable "vpc_id" {}
-variable "subnet_id" {}
+
+variable "subnets" {
+  type = "list"
+}
 
 variable "key_name" {}
 

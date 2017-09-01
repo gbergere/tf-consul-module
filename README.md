@@ -15,7 +15,7 @@ This module use `test-kitchen` and `inspec` in order to be tested with
 
 ### Parameters
 * `vpc_id`: String (required)
-* `subnet_id`: String (required)
+* `subnets`: List (required)
 * `key_name`: String (required)
 * `name_prefix`: String (optional, default: `tf-`)
 * `cluster_size`: Integer (optional, default: `3`)
@@ -27,15 +27,15 @@ This module use `test-kitchen` and `inspec` in order to be tested with
 module "consul" {
   source = "github.com/gbergere/tf-consul-module"
 
-  vpc_id    = "${var.vpc_id}"
-  subnet_id = "${var.subnet_id}"
+  vpc_id  = "${var.vpc_id}"
+  subnets = ["${var.subnet}"]
 
   key_name = "${var.key_name}"
 }
 
 variable "vpc_id" {}
 
-variable "subnet_id" {}
+variable "subnet" {}
 
 variable "key_name" {}
 ```
