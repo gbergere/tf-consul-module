@@ -19,6 +19,7 @@ verifier:
       controls:
         - consul_run
         - consul_server
+        - consul_ui
       hostnames: server_ips
       username: core
     - name: agent

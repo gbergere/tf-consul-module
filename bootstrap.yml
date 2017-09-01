@@ -29,8 +29,8 @@ coreos:
         ExecStart=/usr/bin/docker run \
             -v /etc/consul.d:/etc/consul.d \
             -v /var/lib/consul:/var/lib/consul \
-            -e CONSUL_CLIENT_INTERFACE=eth0 \
             -e CONSUL_BIND_INTERFACE=eth0 \
+            -e CONSUL_CLIENT_INTERFACE=lo \
             --network=host \
             --name consul consul:0.9.2 \
                 agent -server -ui \
