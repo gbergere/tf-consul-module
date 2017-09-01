@@ -27,8 +27,8 @@ coreos:
         ExecStartPre=-/usr/bin/docker rm -f consul
         ExecStart=/usr/bin/docker run \
             -v /etc/consul.d:/etc/consul.d:ro \
-            -e CONSUL_CLIENT_INTERFACE=eth0 \
             -e CONSUL_BIND_INTERFACE=eth0 \
+            -e CONSUL_CLIENT_INTERFACE=lo \
             --network=host \
             --name consul \
             consul:0.9.2 \

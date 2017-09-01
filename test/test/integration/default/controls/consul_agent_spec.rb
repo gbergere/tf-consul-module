@@ -1,11 +1,9 @@
-cluster_ip = attribute "consul_server", {}
-
 control 'consul_agent' do
   describe command('docker logs consul') do
     its('stdout') { should match (/agent: Synced service/) }
   end
 
-  describe command("docker exec -t consul consul members -http-addr=#{cluster_ip}:8500") do
+  describe command("docker exec -t consul consul members") do
     its('stdout') { should match (/alive *server/) }
     its('stdout') { should match (/alive *client/) }
   end

@@ -81,45 +81,6 @@ resource "aws_security_group_rule" "allow_8302_udp_in" {
   self      = true
 }
 
-resource "aws_security_group_rule" "allow_8500_tcp_in" {
-  security_group_id = "${aws_security_group.server.id}"
-  type              = "ingress"
-
-  from_port = 8500
-  to_port   = 8500
-  protocol  = "tcp"
-
-  cidr_blocks = [
-    "0.0.0.0/0",
-  ]
-}
-
-resource "aws_security_group_rule" "allow_8600_tcp_in" {
-  security_group_id = "${aws_security_group.server.id}"
-  type              = "ingress"
-
-  from_port = 8600
-  to_port   = 8600
-  protocol  = "tcp"
-
-  cidr_blocks = [
-    "0.0.0.0/0",
-  ]
-}
-
-resource "aws_security_group_rule" "allow_8600_udp_in" {
-  security_group_id = "${aws_security_group.server.id}"
-  type              = "ingress"
-
-  from_port = 8600
-  to_port   = 8600
-  protocol  = "udp"
-
-  cidr_blocks = [
-    "0.0.0.0/0",
-  ]
-}
-
 resource "aws_security_group_rule" "allow_8302_tcp_out" {
   security_group_id = "${aws_security_group.server.id}"
   type              = "egress"
