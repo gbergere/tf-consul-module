@@ -13,8 +13,8 @@ module "consul" {
 
   name_prefix = "${var.name_prefix}"
 
-  vpc_id    = "${module.vpc.vpc_id}"
-  subnet_id = "${module.vpc.subnet_id}"
+  vpc_id  = "${module.vpc.vpc_id}"
+  subnets = ["${module.vpc.subnet_id}"]
 
   key_name                   = "${module.vpc.key_name}"
   additional_security_groups = ["${module.vpc.security_group}"]

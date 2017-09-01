@@ -12,7 +12,7 @@ resource "aws_instance" "consul" {
 
   instance_type = "${var.instance_type}"
   ami           = "${data.aws_ami.core.id}"
-  subnet_id     = "${var.subnet_id}"
+  subnet_id     = "${element(var.subnets, count.index % length(var.subnets))}"
   key_name      = "${var.key_name}"
 
   iam_instance_profile = "${aws_iam_instance_profile.consul.name}"
