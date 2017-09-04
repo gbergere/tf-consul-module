@@ -51,7 +51,7 @@ coreos:
       content: |
         [Unit]
         Description=dnsmasq
-        After=docker.service
+        After=consul.service
         
         [Service]
         Restart=on-failure
